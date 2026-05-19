@@ -52,6 +52,68 @@ namespace CoworkingAPIWebApp.Controllers
             return service;
         }
 
+        [HttpGet("admin")]
+        public async Task<ActionResult<IEnumerable<Service>>> GetService(string name)
+        {
+           IQueryable<Service> query = _context.Services;
+
+            if (name != null)
+            {
+                query = query.Where(s => s.Name == name);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchService(int id, Service service)
+        {
+            if (id != service.Id)
+            {
+                return BadRequest();
+            }
+
+            var existingService = await _context.Services.FindAsync(id);
+            if (existingService == null)
+            {
+                return NotFound();
+            }
+
+
+            if (service.Name != null)
+            {
+                existingService.Name = service.Name;
+            }
+
+            if (service.Price != null)
+            {
+                existingService.Price = service.Price;
+            }
+
+            if (service.IsAvailable != null)
+            {
+                existingService.IsAvailable = service.IsAvailable;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ServiceExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // PUT: api/Services/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

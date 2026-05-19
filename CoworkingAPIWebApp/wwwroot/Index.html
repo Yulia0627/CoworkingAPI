@@ -1,0 +1,50 @@
+﻿<body>
+    <h1>Місця в коворкінгу</h1>
+    <div id="places-container" class="grid-container"></div>
+
+    <div id="bookingModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Бронювання місця №<span id="display-place-id"></span></h2>
+            <link rel="stylesheet" href="css/site.css">
+
+            <div id="error-summary" style="color: red; margin-bottom: 10px; display: none;"></div>
+
+            <form id="bookingForm">
+                <input type="hidden" id="placeId">
+                <label>Дата та час початку:</label>
+                <input type="datetime-local" id="startTime" required>
+
+                <label>Дата та час завершення:</label>
+                <input type="datetime-local" id="endTime" required>
+
+                <label>Кількість учасників:</label>
+                <input type="number" id="participantsCount" min="1" max="200" value="1" required>
+
+                <div class="checkbox-group">
+                    <label><strong>Додаткові послуги:</strong></label>
+                    <div id="services-container">Завантаження послуг...</div>
+                </div>
+
+                <div class="checkbox-group">
+                    <label><strong>Додаткове обладнання:</strong></label>
+                    <div id="equipment-container">Завантаження обладнання...</div>
+                </div>
+
+                <label>Додаткові побажання:</label>
+                <textarea id="notes" maxlength="500"></textarea>
+
+                <div id="total-price-block" style="margin: 15px 0; padding: 12px; background: #eef7ff; border-radius: 6px; font-size: 1.1em; text-align: right;">
+                    Загальна вартість: <strong id="total-price-value">0</strong> <strong>грн</strong>
+                </div>
+
+                <button type="submit">Підтвердити бронювання</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/lab2.js"></script>
+    <script>
+        getPlacesForBooking();
+    </script>
+</body>

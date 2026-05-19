@@ -18,12 +18,12 @@ namespace CoworkingAPIWebApp.Controllers
         public PlacesController(CoworkingAPIContext context)
         {
             _context = context;
-            if (!_context.Services.Any())
+            if (!_context.Places.Any())
             {
                 _context.Places.AddRange(
         new Place
         {
-            Name = "Стіл біля вікна #1",
+            Name = "Стіл біля вікна",
             Article = "OS-WIN-01",
             PricePerHour = 50.00m,
             Capacity = 1,
@@ -32,7 +32,7 @@ namespace CoworkingAPIWebApp.Controllers
         },
         new Place
         {
-            Name = "Переговорка 'Київ'",
+            Name = "Кімната для переговорів",
             Article = "MR-KYIV-01",
             PricePerHour = 450.00m,
             Capacity = 10,
@@ -57,6 +57,17 @@ namespace CoworkingAPIWebApp.Controllers
             return await query.ToListAsync();
         }
 
+        [HttpGet("admin")]
+        public async Task<ActionResult<IEnumerable<Place>>> GetPlaces(string? article)
+        {
+            IQueryable<Place> query = _context.Places;
+            if (article != null)
+            {
+                query = query.Where(p => p.Article == article);
+            }
+            return await query.ToListAsync();
+        }
+
         // GET: api/Places/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Place>> GetPlace(int id)
@@ -69,6 +80,72 @@ namespace CoworkingAPIWebApp.Controllers
             }
 
             return place;
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchPlace(int id, Place place)
+        {
+            if (id != place.Id)
+            {
+                return BadRequest();
+            }
+
+            var existingPlace = await _context.Places.FindAsync(id);
+            if (existingPlace == null)
+            {
+                return NotFound();
+            }
+
+            if (place.Article != null)
+            {
+                existingPlace.Article = place.Article;
+            }
+
+            if (place.Name != null)
+            {
+                existingPlace.Name = place.Name;
+            }
+
+            if(place.PricePerHour != null)
+            {
+                existingPlace.PricePerHour = place.PricePerHour;
+            }
+
+            if (place.Capacity != null)
+            {
+                existingPlace.Capacity = place.Capacity;
+            }
+
+            if (place.Description != null)
+            {
+                existingPlace.Description = place.Description;
+            }
+            if (place.IsAvailable != null)
+            {
+                existingPlace.IsAvailable = place.IsAvailable;
+            }
+            if(place.ZoneId != null)
+            {
+                existingPlace.ZoneId = place.ZoneId;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PlaceExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
         // PUT: api/Places/5

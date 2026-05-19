@@ -71,6 +71,79 @@ namespace CoworkingAPIWebApp.Controllers
             return equipment;
         }
 
+        [HttpGet("admin")]
+        public async Task<ActionResult<IEnumerable<Equipment>>> GetEquipment(string? article)
+        {
+            IQueryable<Equipment> query = _context.Equipment;
+            if (article != null)
+            {
+                query = query.Where(e => e.Article == article);
+            }
+            return await query.ToListAsync();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchEquipment(int id, Equipment equip)
+        {
+            if (id != equip.Id)
+            {
+                return BadRequest();
+            }
+
+            var existingEquip = await _context.Equipment.FindAsync(id);
+            if (existingEquip == null)
+            {
+                return NotFound();
+            }
+
+            if (equip.Article != null)
+            {
+                existingEquip.Article = equip.Article;
+            }
+
+            if (equip.Name != null)
+            {
+                existingEquip.Name = equip.Name;
+            }
+
+            if (equip.PricePerHour != null)
+            {
+                existingEquip.PricePerHour = equip.PricePerHour;
+            }
+
+            if (equip.Description != null)
+            {
+                existingEquip.Description = equip.Description;
+            }
+            if (equip.IsAvailable != null)
+            {
+                existingEquip.IsAvailable = equip.IsAvailable;
+            }
+
+            if (equip.CategoryId != null)
+            {
+                existingEquip.CategoryId = equip.CategoryId;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EquipmentExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // PUT: api/Equipments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

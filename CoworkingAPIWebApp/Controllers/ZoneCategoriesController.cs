@@ -65,6 +65,49 @@ namespace CoworkingAPIWebApp.Controllers
             return zoneCategory;
         }
 
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchZoneCategory(int id, ZoneCategory zoneCategory)
+        {
+            if (id != zoneCategory.Id)
+            {
+                return BadRequest();
+            }
+
+           var existingCat = await _context.ZoneCategories.FindAsync(id);
+            if (existingCat == null)
+            {
+                return NotFound();
+            }
+
+            if (zoneCategory.Name != null)
+            {
+                existingCat.Name = zoneCategory.Name;
+            }
+
+            if (zoneCategory.Description != null)
+                {
+                    existingCat.Description = zoneCategory.Description;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ZoneCategoryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // PUT: api/ZoneCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

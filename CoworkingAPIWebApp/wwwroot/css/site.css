@@ -1,31 +1,242 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+h1 {
+    text-align: center;
+    margin-top: 20px;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
 }
+
+.place-card {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    text-align: center;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+    .place-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .place-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .place-card h3 {
+        margin: 10px 0;
+        font-size: 1.25em;
+    }
+
+    .place-card p {
+        margin: 5px 0;
+        color: #666;
+    }
+
+    .place-card button,
+    .modal-content button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        width: 100%;
+        transition: background 0.3s;
+        margin-top: auto;
+    }
+
+        .place-card button:hover,
+        .modal-content button:hover {
+            background-color: #0056b3;
+        }
+
+.modal {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #ffffff !important;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    max-height: 85vh !important; 
+    overflow-y: auto !important;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    font-size: 28px;
+    color: #aaa;
+}
+
+    .close:hover {
+        color: #000;
+    }
+
+#error-summary {
+    background-color: #ffe6e6;
+    border-left: 5px solid #ff4d4d;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.modal-content form {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: left !important;
+}
+
+    .modal-content form > label {
+        display: block !important;
+        margin-top: 12px !important;
+        margin-bottom: 4px !important;
+        font-weight: bold !important;
+        font-size: 0.9em;
+        width: 100% !important;
+    }
+
+.modal-content input[type="datetime-local"],
+.modal-content input[type="number"],
+.modal-content textarea {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px !important;
+    margin-top: 5px !important;
+    margin-bottom: 10px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+    font-family: inherit;
+}
+
+.modal-content textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.modal-content button[type="submit"] {
+    display: block !important;
+    width: 100% !important;
+    margin-top: 20px !important;
+}
+
+.checkbox-group {
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+
+
+    .checkbox-group > label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+.checkbox-item {
+    display: flex !important;
+    flex-direction: row !important; 
+    align-items: center !important;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+    .checkbox-item input[type="checkbox"] {
+        width: auto !important;
+        height: auto !important;
+        margin: 0 10px 0 0 !important; 
+        padding: 0 !important;
+        cursor: pointer;
+        display: inline-block !important;
+    }
+
+    .checkbox-item label {
+        display: inline-block !important;
+        width: auto !important;
+        margin: 0 !important;
+        font-weight: normal !important;
+        font-size: 0.95em;
+        cursor: pointer;
+    }
+.user-bookings-list {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.user-booking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    border-left: 4px solid #28a745;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.cancel-booking-btn {
+    background: #dc3545 !important;
+    color: white !important;
+    border: none !important;
+    padding: 2px 8px !important;
+    font-size: 0.85em !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    width: auto !important;
+    min-width: unset !important;
+    margin: 0 !important;
+}
+
+    .cancel-booking-btn:hover {
+        background: #bd2130 !important;
+    }

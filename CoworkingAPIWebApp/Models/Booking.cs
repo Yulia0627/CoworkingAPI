@@ -28,7 +28,7 @@ namespace CoworkingAPIWebApp.Models
 
         [DataType(DataType.Currency)]
         [Display(Name = "Загальна вартість")]
-        public decimal TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
 
         [StringLength(500, ErrorMessage = "Поле має містити до 500 символів.")]
         [Display(Name = "Додаткові побажання")]

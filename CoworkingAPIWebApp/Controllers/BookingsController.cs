@@ -24,10 +24,12 @@ namespace CoworkingAPIWebApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         {
+            var now = DateTime.Now;
             return await _context.Bookings
                 .Include(b => b.Services)   
-                .Include(b => b.Equipment)  
-                .Include(b => b.Place)      
+                .Include(b => b.Equipment)
+                //.Include(b => b.Place)
+                .Where(b => b.StatusId != 3 && b.EndTime > now)
                 .ToListAsync();
         }
 
@@ -105,7 +107,7 @@ namespace CoworkingAPIWebApp.Controllers
                     return BadRequest("Не можна створювати бронювання на минулий час!");
                 }
 
-                decimal newTotalPrice = hours * dbPlace.PricePerHour;
+                decimal newTotalPrice = hours * dbPlace.PricePerHour ?? 0;
 
                 existingBooking.Services.Clear();
                 if (booking.Services != null)
@@ -115,7 +117,7 @@ namespace CoworkingAPIWebApp.Controllers
                         var dbService = await _context.Services.FindAsync(service.Id);
                         if (dbService != null)
                         {
-                            newTotalPrice += dbService.Price;
+                            newTotalPrice += dbService.Price ?? 0;
                             existingBooking.Services.Add(dbService);
                         }
                     }
@@ -129,7 +131,7 @@ namespace CoworkingAPIWebApp.Controllers
                         var dbEquip = await _context.Equipment.FindAsync(equip.Id);
                         if (dbEquip != null)
                         {
-                            newTotalPrice += (hours * dbEquip.PricePerHour);
+                            newTotalPrice += (hours * dbEquip.PricePerHour ?? 0);
                             existingBooking.Equipment.Add(dbEquip);
                         }
                     }

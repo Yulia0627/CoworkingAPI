@@ -27,7 +27,15 @@ namespace CoworkingAPIWebApp.Controllers
                     isAdmin = false,
                     RegisteredAt = DateTime.Now
                 });
-                _context.SaveChanges(); 
+                _context.SaveChanges();
+                _context.Users.Add(new User
+                {
+                    FullName = "Олена Іванчук",
+                    Email = "ivanchuk@coworking.com",
+                    isAdmin = false,
+                    RegisteredAt = DateTime.Now
+                });
+                _context.SaveChanges();
             }
         }
 
